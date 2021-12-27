@@ -1,0 +1,5 @@
+<div class="bg-light p-3 pl-4 rounded d-flex mt-3 mb-3">
+    <h4 class="me-auto">{{ title }}</h4>
+    {% if user.is_authenticated %}<span class="btn" style="cursor:default;">{{ person.short_name }}</span><a class="btn btn-secondary" href="{% url 'main:access-logout' %}" role="button">Выйти</a>{% endif %}
+    {% if lead_text %}<p class="lead">{{ lead_text }}</p>{% endif %}
+</div>

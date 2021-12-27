@@ -1,0 +1,49 @@
+{% extends 'main/layout.html' %}
+{% load static %}
+{% block content %}
+{% include 'main/_top.html' with title="Поиск ведомостей" %}
+<form target="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <fieldset>
+        <h5>Найти ведомость</h5>
+        <div class="mb-3">
+            <label for="id_course" class="form-label">Курс</label>
+            {{ form.course }}
+            {% if form.course.errors %}<div class="mt-4">{% for error in form.file.errors %}<p class="bg-danger">{{ error }}</p>{% endfor %}</div>{% endif %}
+        </div>
+        <div class="mb-3">
+            <label for="id_subject" class="form-label">Предмет</label>
+            {{ form.subject }}
+            {% if form.subject.errors %}<div class="mt-4">{% for error in form.file.errors %}<p class="bg-danger">{{ error }}</p>{% endfor %}</div>{% endif %}
+        </div>
+        <button type="submit" class="btn btn-primary">Найти</button>
+        {% if form.non_field_errors %}<div class="mt-4">{% for error in form.non_field_errors %}<p class="bg-danger">{{ form.non_field_errors }}</p>{% endfor %}</div>{% endif %}
+    </fieldset>
+</form>
+{% if results %}
+{% if documents %}
+<table class="table table-striped mt-4">
+    <thead>
+        <tr>
+            <th scope="col">Курс</th>
+            <th scope="col">Предмет</th>
+            <th scope="col">Преподаватель</th>
+            <th scope="col">Ведомость</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for document in documents %}
+        <tr>
+            <td>{{ document.course }}</td>
+            <td>{{ document.subject }}</td>
+            <td>{{ document.teacher.short_name }}</td>
+            <td><a href="{{ document.file.url }}" target="_blank">{{ document.filename }}</a></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="mt-4"><p class="bg-warning">К сожалению, ничего не найдено.</p></div>
+{% endif %}
+{% endif %}
+{% endblock %}

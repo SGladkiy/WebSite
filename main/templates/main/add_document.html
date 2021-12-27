@@ -1,0 +1,42 @@
+{% extends 'main/layout.html' %}
+{% load static %}
+{% block content %}
+{% include 'main/_top.html' with title="Добавить ведомость" %}
+<h5 class="mt-4">Список ведомостей</h5>
+<ul class="list-group list-group-flush mb-4">
+    {% for document in documents %}
+    <li class="list-group-item">{{ document.course }}, {{ document.subject }}, <a href="{{ document.file.url }}">{{ document.filename }}</a></li>
+    {% endfor %}
+</ul>
+<form target="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% for hidden in form.hidden_fields %}
+    {{ hidden }}
+    {% endfor %}
+    <fieldset>
+        <h5>Новая ведомость</h5>
+        <div class="mb-3">
+            <label for="id_course" class="form-label">Курс</label>
+            {{ form.course }}
+            {% if form.course.errors %}<div class="mt-4">{% for error in form.file.errors %}<p class="bg-danger">{{ error }}</p>{% endfor %}</div>{% endif %}
+        </div>
+        <div class="mb-3">
+            <label for="id_subject" class="form-label">Предмет</label>
+            {{ form.subject }}
+            {% if form.subject.errors %}<div class="mt-4">{% for error in form.file.errors %}<p class="bg-danger">{{ error }}</p>{% endfor %}</div>{% endif %}
+        </div>
+        <div class="mb-3">
+            <label for="id_file" class="form-label">Ведомость (файл)</label>
+            {{ form.file }}
+            {% if form.file.errors %}<div class="mt-4">{% for error in form.file.errors %}<p class="bg-danger">{{ error }}</p>{% endfor %}</div>{% endif %}
+        </div>
+        <div class="mb-3">
+            <label for="id_signature" class="form-label">Подпись (файл)</label>
+            {{ form.signature }}
+            {% if form.signature.errors %}<div class="mt-4">{% for error in form.signature.errors %}<p class="bg-danger">{{ error }}</p>{% endfor %}</div>{% endif %}
+        </div>
+        <button type="submit" class="btn btn-primary">Создать</button>
+        {% if form.non_field_errors %}<div class="mt-4">{% for error in form.non_field_errors %}<p class="bg-danger">{{ error }}</p>{% endfor %}</div>{% endif %}
+    </fieldset>
+</form>
+{% endblock %}
